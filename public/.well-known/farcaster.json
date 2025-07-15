@@ -1,1 +1,15 @@
-{}
+{
+  "name": "10 Song Album Game",
+  "description": "Collaborative playlist game for the Farcaster /now-playing channel. Build themed 10-song playlists, one song per user.",
+  "url": "https://your-app-url.com",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["music", "game", "social"],
+  "theme_color": "#f472b6",
+  "background_color": "#fff"
+}

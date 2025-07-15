@@ -1,62 +1,30 @@
-import { sdk } from "@farcaster/frame-sdk";
-import { useEffect } from "react";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import React from 'react';
+import { AuthProvider, useAuth } from './hooks/useAuth';
+import SplashScreen from './components/common/SplashScreen';
+import LoginButton from './components/common/LoginButton';
+import UserInfo from './components/common/UserInfo';
+import PlaylistDemo from './components/pages/PlaylistDemo';
+
+function AppContent() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) return <SplashScreen />;
+  if (!user) return <LoginButton />;
+  return (
+    <div style={{ padding: 24 }}>
+      <UserInfo />
+      <h1>Welcome to the 10 Song Album Game!</h1>
+      <PlaylistDemo />
+      {/* Main app content goes here */}
+    </div>
+  );
+}
 
 function App() {
-  useEffect(() => {
-    sdk.actions.ready();
-  }, []);
-
   return (
-    <>
-      <div>Mini App + Vite + TS + React + Wagmi</div>
-      <ConnectMenu />
-    </>
-  );
-}
-
-function ConnectMenu() {
-  const { isConnected, address } = useAccount();
-  const { connect, connectors } = useConnect();
-
-  if (isConnected) {
-    return (
-      <>
-        <div>Connected account:</div>
-        <div>{address}</div>
-        <SignButton />
-      </>
-    );
-  }
-
-  return (
-    <button type="button" onClick={() => connect({ connector: connectors[0] })}>
-      Connect
-    </button>
-  );
-}
-
-function SignButton() {
-  const { signMessage, isPending, data, error } = useSignMessage();
-
-  return (
-    <>
-      <button type="button" onClick={() => signMessage({ message: "hello world" })} disabled={isPending}>
-        {isPending ? "Signing..." : "Sign message"}
-      </button>
-      {data && (
-        <>
-          <div>Signature</div>
-          <div>{data}</div>
-        </>
-      )}
-      {error && (
-        <>
-          <div>Error</div>
-          <div>{error.message}</div>
-        </>
-      )}
-    </>
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
